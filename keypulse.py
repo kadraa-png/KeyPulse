@@ -17,7 +17,7 @@ class AutoKeyClicker:
         self.listener.start()
 
         self.app = ctk.CTk()
-        self.app.title("Auto Key Clicker")
+        self.app.title("KeyPulse")
         self.app.geometry("460x600")
         self.app.resizable(False, False)
         self.running = False
@@ -32,23 +32,18 @@ class AutoKeyClicker:
         self.app.mainloop()
 
     def build_ui(self):
-        # Top row with mouse + macro buttons
         top_row = ctk.CTkFrame(self.app, fg_color="transparent")
         top_row.pack(fill="x", padx=10, pady=(5, 0))
 
-        # Macro automation button (top-left)
         self.macro_button = ctk.CTkButton(top_row, text="🧩", width=30, command=self.open_macro_popup)
         self.macro_button.pack(side="left", padx=(0, 5))
 
-        #Mouse automation button (next to it)
         self.mouse_button = ctk.CTkButton(top_row, text="🖱", width=30, command=self.open_mouse_popup)
         self.mouse_button.pack(side="left")
 
-        #spacer
         ctk.CTkFrame(top_row, width=1, height=1).pack(side="left", expand=True, fill="x")
 
 
-        #Key to press
         ctk.CTkLabel(self.app, text="Key to Press:").pack(pady=(10, 0))
         self.key_entry = ctk.CTkEntry(self.app, width=200)
         self.key_entry.insert(0, "F10")
@@ -56,7 +51,6 @@ class AutoKeyClicker:
 
         ctk.CTkButton(self.app, text="🗂 Key List", command=self.show_key_list).pack(pady=5)
 
-        # Delay inputs
         ctk.CTkLabel(self.app, text="Delay Before Press:").pack(pady=(10, 0))
         delay_frame = ctk.CTkFrame(self.app)
         delay_frame.pack(pady=5)
@@ -65,7 +59,6 @@ class AutoKeyClicker:
         self.second_entry = self.create_labeled_entry(delay_frame, "Sec", 1)
         self.ms_entry = self.create_labeled_entry(delay_frame, "ms", 0)
 
-        # Start/Stop Buttons
         btn_frame = ctk.CTkFrame(self.app)
         btn_frame.pack(pady=10)
         self.start_button = ctk.CTkButton(btn_frame, text="▶ Start", command=self.start_clicking, width=100)
@@ -73,7 +66,6 @@ class AutoKeyClicker:
         self.stop_button = ctk.CTkButton(btn_frame, text="⏹ Stop", command=self.stop_clicking, width=100, state="disabled")
         self.stop_button.pack(side="left", padx=10)
 
-        # Advanced Options
         advanced_frame = ctk.CTkFrame(self.app)
         advanced_frame.pack(pady=10)
         ctk.CTkLabel(advanced_frame, text="Advanced:").pack()
@@ -81,7 +73,6 @@ class AutoKeyClicker:
         ctk.CTkButton(advanced_frame, text="Max Duration (sec)", command=self.set_max_duration).pack(pady=2)
         ctk.CTkButton(advanced_frame, text="Start Delay (sec)", command=self.set_start_delay).pack(pady=2)
 
-        # Profile Save/Load + Test
         action_frame = ctk.CTkFrame(self.app)
         action_frame.pack(pady=5)
         ctk.CTkButton(action_frame, text="💾 Save Profile", command=self.save_profile).pack(side="left", padx=10)
@@ -109,7 +100,6 @@ class AutoKeyClicker:
 
         ctk.CTkLabel(self.mouse_popup, text="Mouse Clicker", font=("Segoe UI", 16)).pack(pady=10)
 
-        # Delay inputs
         delay_frame = ctk.CTkFrame(self.mouse_popup)
         delay_frame.pack(pady=5)
         self.m_hour = self.create_labeled_entry(delay_frame, "Hrs", 0)
@@ -117,12 +107,10 @@ class AutoKeyClicker:
         self.m_second = self.create_labeled_entry(delay_frame, "Sec", 1)
         self.m_ms = self.create_labeled_entry(delay_frame, "ms", 0)
 
-        # Click type (radio buttons)
         self.mouse_button = ctk.StringVar(value="1")
         for text, val in [("Left Click", "1"), ("Middle Click", "2"), ("Right Click", "3")]:
             ctk.CTkRadioButton(self.mouse_popup, text=text, variable=self.mouse_button, value=val).pack(pady=2)
 
-        # Start/Stop buttons
         control_frame = ctk.CTkFrame(self.mouse_popup)
         control_frame.pack(pady=10)
         self.mouse_start = ctk.CTkButton(control_frame, text="▶ Start", command=self.start_mouse_clicking, width=100)
@@ -404,7 +392,6 @@ class AutoKeyClicker:
         ctk.CTkButton(controls, text="➕ Add Mouse", command=self.add_macro_mouse).pack(side="left", padx=5)
         ctk.CTkButton(controls, text="🗑 Remove", command=self.remove_macro_step).pack(side="left", padx=5)
 
-        # Repeat count and infinite toggle
         repeat_frame = ctk.CTkFrame(self.macro_popup)
         repeat_frame.pack(pady=10)
 
@@ -531,7 +518,6 @@ class AutoKeyClicker:
                 label = f"[{action.capitalize()}] {target} ⏱ Hold: {hold:.2f}s → Delay: {delay:.2f}s"
                 self.macro_listbox.insert(END, label)
 
-            # Restore repeat settings
             self.repeat_entry.delete(0, END)
             self.repeat_entry.insert(0, str(profile.get("repeat", "1")))
             self.infinite_repeat.set(profile.get("infinite", False))
